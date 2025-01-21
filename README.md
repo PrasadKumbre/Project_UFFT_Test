@@ -10,6 +10,7 @@
 </ul>
 "# Project_UFFT_2.0" 
 
+<h1>All the Modules are connected with <i>db_connection.py</i> file so make changes init for database connection.</h1>
 
 This command will install all the required packages and their dependencies.
 ```bash
