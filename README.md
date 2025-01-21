@@ -13,5 +13,5 @@
 
 This command will install all the required packages and their dependencies.
 ```bash
-pip install Flask Flask-Mail mysql-connector-python transformers apscheduler pandas reportlab
+pip install Flask Flask-Mail mysql-connector-python transformers apscheduler pandas reportlab torch torchvision torchaudio
 ```
