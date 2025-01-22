@@ -101,6 +101,29 @@
         .btn:hover {
             background-color: #218838;
         }
+
+        
+       input[type="submit"] {
+            margin-top: 2.5%;
+            background-color: #2a4d69;
+            /* Dark Blue */
+            color: #ffffff;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            width: 200px;
+            /* Make buttons uniform in size */
+            text-align: center;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #37659d;
+            /* Slightly lighter blue */
+        }
+
     </style>
     <script>
         // JavaScript to update the summary based on dropdown selection
@@ -165,7 +188,16 @@
         {% else %}
         <p class="error">No data available for the selected time period.</p>
         {% endif %}
-    </div>
+        <div style="display: flex; gap: 10px; align-items: center; margin-top:2.5%">
+            <form action="{{ url_for('user_reg.welcome') }}">
+                <input type="submit" value="Home">
+            </form>
+            <form action="{{ url_for('data_visualization.index') }}">
+                <input type="submit" value="More Details">
+            </form>
+        </div>
+
+
 </body>
 
 </html>

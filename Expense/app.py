@@ -1,6 +1,6 @@
 import mysql.connector
 from datetime import datetime 
-from flask import Flask,request,render_template,jsonify,redirect,url_for,Blueprint
+from flask import Flask,request,render_template,jsonify,redirect,url_for,Blueprint,session
 import os
 from werkzeug.utils import secure_filename
 from db_connection import get_connection
@@ -80,8 +80,10 @@ def upload_receipt():
 ###### getting the form data and calling the add expense function
 @expense_bp.route('/get_form_data', methods=['POST'])
 def get_form_data():
-    user_id = 1  # Hardcoded for now, ideally fetched from session or login
-    family_id = 1  # Hardcoded for now, modify as needed
+    #user_id = 1  # Hardcoded for now, ideally fetched from session or login
+    user_id = session['user_id']
+    #family_id = 1  # Hardcoded for now, modify as needed
+    family_id= session['family_id']
     
     # Fetch form data
     category = request.form.get('category')

@@ -78,7 +78,7 @@
 </head>
 
 <body>
-    <h1>Account Created</h1>
+    <h1>Welcome {{ name }}.</h1>
     <div class="main-content">
         <form action="{{ url_for('expense.index') }}">
             <input type="submit" value="Expenses">
@@ -102,13 +102,14 @@
 
     <!-- Family Summary here -->
     <!-- Family we are using get request to pass the family id so replace the family_id with current user -->
-       
-    <a href="{{ url_for('data_visualization.fetch_family_summary',family_id=1)}}" class="btn btn-success">
-    <button>
-        Show Summary
-    </button>
-    </a>
-    
+    {% if role == 'hof' %}
+    <form action="{{ url_for('data_visualization.fetch_family_summary') }}" method="GET">
+        <input type="hidden" name="family_id" value="{{ family_id }}">
+        <input class="onlyHOF" type="submit" value="View summary of members">
+    </form>
+    {% endif %}
+
+     
 </div>
     <footer>
         &copy; 2025 Unified Family Finance Tracker | All Rights Reserved

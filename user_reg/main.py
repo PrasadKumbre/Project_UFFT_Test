@@ -85,7 +85,6 @@ def validate_phone_number(phone_no):
 
 
 
-
 def validate_email(email):
     regex = r'^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$'
     return re.match(regex, email)
@@ -153,6 +152,7 @@ def member_code(mem_code):
         return False,'Family code not found. Please try again'
 
 
+
 @user_reg_bp.route("/")
 def index():
     return render_template("home_1.html")
@@ -204,8 +204,19 @@ def signin():
     else:
          login_name = request.form['login_name']
          login_pass = request.form['login_pass']
-         
-         val, mess =check_account(login_name,login_pass)
+    
+         val, mess = check_account(login_name,login_pass)
+         # After successfull login storing the Users Details in Session
+         if val:
+            session['username'] = login_name
+            # Fetch all required user details in a query
+            cur.execute("SELECT user_id, role, family_id, name FROM users WHERE user_name = %s", (login_name,))
+            user_data = cur.fetchone()
+            # Add user details to session
+            if user_data:
+                session['user_id'], session['role'], session['family_id'], session['name'] = user_data
+            else:
+                print("User not found.")
          if not val:
             return render_template('signin.html', error=f"{mess}")
          
@@ -314,7 +325,7 @@ def hof():
          fam_name=request.form['fam_name']
          user_name=session.get('user_name')
          hof_code=session.get('hof_code')
-         cur.execute("insert into families (family_id,family_name) values(%s,%s)",(hof_code,fam_name))
+         cur.execute("insert into family(family_id,family_name) values(%s,%s)",(hof_code,fam_name))
          con.commit()
          cur.execute("update users set family_id=%s where user_name=%s",(hof_code,user_name))
          con.commit()
@@ -410,12 +421,13 @@ def new_hof():
     
 
 
-       
-
-
 @user_reg_bp.route("/welcome")
 def welcome():
-    return render_template('welcome.html')
+    family_id=session['family_id'] 
+    role=session['role']
+    role=role.lower()
+    name=session['name']
+    return render_template('welcome.html', family_id=family_id,role=role,name=name)
     
 
 

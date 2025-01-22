@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request, redirect, flash, current_app,url_for
+from flask import Blueprint, render_template, request, redirect, flash, current_app,url_for,session
 from datetime import datetime
 from werkzeug.utils import secure_filename
 from flask_mail import Message
@@ -314,6 +314,7 @@ def expenses():
         amount = float(request.form['amount'])
         date = request.form['date']
         category_id = int(request.form['category_id'])
+        family_id=session['family_id']
 
         # Validate user_id and fetch email
         cursor.execute('SELECT email FROM users WHERE user_id = %s', (user_id,))
@@ -328,9 +329,9 @@ def expenses():
 
         # Insert the new expense
         cursor.execute('''
-            INSERT INTO expenses (user_id, description, amount, date, category_id)
-            VALUES (%s, %s, %s, %s, %s)
-        ''', (user_id, description, amount, date, category_id))
+            INSERT INTO expenses (user_id, description, amount, date, category_id, family_id)
+            VALUES (%s, %s, %s, %s, %s,%s)
+        ''', (user_id, description, amount, date, category_id, family_id))
         connection.commit()
 
         # Calculate user's total expenses dynamically
@@ -347,7 +348,8 @@ def expenses():
 
         # Send email if user's total expenses exceed their budget
         if budget_data and total_expenses > budget_data['user_budget']:
-            send_user_alert_email(user_email, total_expenses, budget_data['user_budget'])
+            pass
+            #send_user_alert_email(user_email, total_expenses, budget_data['user_budget'])
 
         # Check if total expenses exceed the category threshold
         cursor.execute('''
